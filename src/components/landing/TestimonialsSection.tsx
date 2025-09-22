@@ -67,7 +67,7 @@ export const TestimonialsSection: React.FC = () => {
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Loved by
-            <span className="block bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-blue-600 via-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent">
               Marketing Teams
             </span>
             Worldwide
@@ -81,7 +81,7 @@ export const TestimonialsSection: React.FC = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent mb-2">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent mb-2">
                 {stat.value}
               </div>
               <div className="text-gray-600 font-medium">{stat.label}</div>
@@ -144,7 +144,7 @@ export const TestimonialsSection: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/register"
-                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-pink-500 text-white rounded-xl font-semibold text-lg hover:from-blue-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
+                className="px-8 py-4 bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 text-white rounded-xl font-semibold text-lg hover:from-blue-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
               >
                 Start Free Trial
               </a>
