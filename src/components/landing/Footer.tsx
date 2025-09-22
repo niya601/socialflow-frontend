@@ -250,24 +250,24 @@ export const Footer: React.FC = () => {
                 >
                   {loading ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Subscribing...
-                    </>
-                  ) : (
-                    'Subscribe'
-                  )}
-                </button>
-              </form>
+              
+              {/* Success/Error Messages */}
+              {subscriptionStatus === 'success' && (
+                <div className="mt-4 p-3 bg-green-100 border border-green-200 rounded-lg">
+                  <p className="text-sm text-green-700 font-medium">
+                    🎉 Successfully subscribed! Thank you for joining our newsletter.
+                  </p>
+                </div>
+              )}
+              
+              {subscriptionStatus === 'error' && error && (
+                <div className="mt-4 p-3 bg-red-100 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-700 font-medium">
+                    ❌ {error}
+                  </p>
+                </div>
+              )}
             </div>
-            
-            {/* Success/Error Messages */}
-            {subscriptionStatus === 'success' && (
-              <div className="mt-4 p-3 bg-green-100 border border-green-200 rounded-lg">
-                <p className="text-sm text-green-700 font-medium">
-                  🎉 Successfully subscribed! Thank you for joining our newsletter.
-                </p>
-              </div>
-            )}
             
             {subscriptionStatus === 'error' && error && (
               <div className="mt-4 p-3 bg-red-100 border border-red-200 rounded-lg">
