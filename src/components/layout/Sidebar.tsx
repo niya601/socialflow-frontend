@@ -59,8 +59,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 src="/socialflow-icon.png" 
                 alt="SocialFlow" 
                 className="h-6 w-6"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
               />
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+              <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500">
                 SocialFlow
               </span>
             </div>

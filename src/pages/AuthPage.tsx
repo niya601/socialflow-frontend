@@ -27,7 +27,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
                     e.currentTarget.style.display = 'none';
                   }}
                 />
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+                <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500">
                   SocialFlow
                 </h1>
               </div>
