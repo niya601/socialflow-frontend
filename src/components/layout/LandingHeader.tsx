@@ -34,9 +34,10 @@ export const LandingHeader: React.FC = () => {
               <img 
                 src="/socialflow-icon.png" 
                 alt="SocialFlow" 
-                className="h-8 w-8"
+                className="h-8 w-8 object-contain"
                 onError={(e) => {
-                  e.currentTarget.style.display = 'none';
+                  const target = e.currentTarget as HTMLImageElement;
+                  target.style.display = 'none';
                 }}
               />
               <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500">
