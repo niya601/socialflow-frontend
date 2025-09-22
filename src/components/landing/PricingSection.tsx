@@ -75,7 +75,7 @@ export const PricingSection: React.FC = () => {
   const [isYearly, setIsYearly] = useState(false);
 
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+    <section id="pricing" className="py-24 bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">

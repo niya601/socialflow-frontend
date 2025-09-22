@@ -2,34 +2,43 @@ import React from 'react';
 import { Share2, Mail, Phone, MapPin, Twitter, Linkedin, Instagram, Github } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const handleSmoothScroll = (href: string) => {
+  if (href.startsWith('#')) {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+};
+
 const footerLinks = {
   product: [
-    { name: 'Features', href: '#features' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'Integrations', href: '#integrations' },
-    { name: 'API', href: '#api' },
-    { name: 'Changelog', href: '#changelog' },
+    { name: 'Features', href: '#features', type: 'scroll' },
+    { name: 'Pricing', href: '#pricing', type: 'scroll' },
+    { name: 'Integrations', href: '/app', type: 'route' },
+    { name: 'API', href: '/app', type: 'route' },
+    { name: 'Changelog', href: '/app', type: 'route' },
   ],
   company: [
-    { name: 'About Us', href: '#about' },
-    { name: 'Careers', href: '#careers' },
-    { name: 'Press', href: '#press' },
-    { name: 'Blog', href: '#blog' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'About Us', href: '#contact', type: 'scroll' },
+    { name: 'Careers', href: '#contact', type: 'scroll' },
+    { name: 'Press', href: '#contact', type: 'scroll' },
+    { name: 'Blog', href: '#contact', type: 'scroll' },
+    { name: 'Contact', href: '#contact', type: 'scroll' },
   ],
   resources: [
-    { name: 'Help Center', href: '#help' },
-    { name: 'Documentation', href: '#docs' },
-    { name: 'Tutorials', href: '#tutorials' },
-    { name: 'Community', href: '#community' },
-    { name: 'Status', href: '#status' },
+    { name: 'Help Center', href: '/app', type: 'route' },
+    { name: 'Documentation', href: '/app', type: 'route' },
+    { name: 'Tutorials', href: '/app', type: 'route' },
+    { name: 'Community', href: '/app', type: 'route' },
+    { name: 'Status', href: '/app', type: 'route' },
   ],
   legal: [
-    { name: 'Privacy Policy', href: '#privacy' },
-    { name: 'Terms of Service', href: '#terms' },
-    { name: 'Cookie Policy', href: '#cookies' },
-    { name: 'GDPR', href: '#gdpr' },
-    { name: 'Security', href: '#security' },
+    { name: 'Privacy Policy', href: '#contact', type: 'scroll' },
+    { name: 'Terms of Service', href: '#contact', type: 'scroll' },
+    { name: 'Cookie Policy', href: '#contact', type: 'scroll' },
+    { name: 'GDPR', href: '#contact', type: 'scroll' },
+    { name: 'Security', href: '#contact', type: 'scroll' },
   ],
 };
 
@@ -83,12 +92,21 @@ export const Footer: React.FC = () => {
             <ul className="space-y-3">
               {footerLinks.product.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-gray-300 hover:text-teal-400 transition-colors"
-                  >
-                    {link.name}
-                  </a>
+                  {link.type === 'route' ? (
+                    <Link
+                      to={link.href}
+                      className="text-gray-300 hover:text-teal-400 transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => handleSmoothScroll(link.href)}
+                      className="text-gray-300 hover:text-teal-400 transition-colors"
+                    >
+                      {link.name}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
@@ -100,12 +118,21 @@ export const Footer: React.FC = () => {
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-gray-300 hover:text-teal-400 transition-colors"
-                  >
-                    {link.name}
-                  </a>
+                  {link.type === 'route' ? (
+                    <Link
+                      to={link.href}
+                      className="text-gray-300 hover:text-teal-400 transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => handleSmoothScroll(link.href)}
+                      className="text-gray-300 hover:text-teal-400 transition-colors"
+                    >
+                      {link.name}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
@@ -117,12 +144,21 @@ export const Footer: React.FC = () => {
             <ul className="space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-gray-300 hover:text-teal-400 transition-colors"
-                  >
-                    {link.name}
-                  </a>
+                  {link.type === 'route' ? (
+                    <Link
+                      to={link.href}
+                      className="text-gray-300 hover:text-teal-400 transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => handleSmoothScroll(link.href)}
+                      className="text-gray-300 hover:text-teal-400 transition-colors"
+                    >
+                      {link.name}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
@@ -134,12 +170,21 @@ export const Footer: React.FC = () => {
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-gray-300 hover:text-teal-400 transition-colors"
-                  >
-                    {link.name}
-                  </a>
+                  {link.type === 'route' ? (
+                    <Link
+                      to={link.href}
+                      className="text-gray-300 hover:text-teal-400 transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => handleSmoothScroll(link.href)}
+                      className="text-gray-300 hover:text-teal-400 transition-colors"
+                    >
+                      {link.name}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
@@ -169,6 +214,33 @@ export const Footer: React.FC = () => {
               <button className="px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl font-semibold hover:from-teal-600 hover:to-blue-700 transition-all transform hover:scale-105">
                 Subscribe
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Contact Section */}
+      <div id="contact" className="border-t border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="text-center">
+            <h4 className="text-2xl font-bold text-white mb-4">Get in Touch</h4>
+            <p className="text-gray-300 mb-6">
+              Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a
+                href="mailto:hello@socialflow.com"
+                className="flex items-center px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl font-semibold hover:from-teal-600 hover:to-blue-700 transition-all"
+              >
+                <Mail className="w-5 h-5 mr-2" />
+                Email Us
+              </a>
+              <Link
+                to="/register"
+                className="px-6 py-3 bg-white/10 backdrop-blur-sm text-white rounded-xl font-semibold hover:bg-white/20 transition-all border border-white/20"
+              >
+                Start Free Trial
+              </Link>
             </div>
           </div>
         </div>
