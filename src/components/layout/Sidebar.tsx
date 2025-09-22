@@ -59,9 +59,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 src="/socialflow-icon.png" 
                 alt="SocialFlow" 
                 className="h-6 w-6"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
               />
               <span className="text-xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                 SocialFlow
@@ -93,11 +90,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }}
                   className={`w-full flex items-center px-4 py-3 text-left rounded-xl transition-all ${
                     isActive 
-                      ? 'bg-gradient-to-r from-teal-50 to-blue-50 text-teal-700 border border-teal-200 shadow-sm' 
+                      ? 'bg-gradient-to-r from-blue-50 via-purple-50 via-pink-50 to-orange-50 text-blue-700 border border-blue-200 shadow-sm' 
                       : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
-                  <Icon className={`w-5 h-5 mr-3 ${isActive ? 'text-teal-600' : ''}`} />
+                  <Icon className={`w-5 h-5 mr-3 ${isActive ? 'text-blue-600' : ''}`} />
                   <span className="font-medium">{item.label}</span>
                 </button>
               );
@@ -108,7 +105,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* User Info */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 rounded-full flex items-center justify-center">
               <span className="text-white font-semibold text-sm">
                 {user?.company_name?.charAt(0) || 'U'}
               </span>
@@ -124,7 +121,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="mt-3">
             <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
               user?.subscription_plan === 'Pro' 
-                ? 'bg-teal-100 text-teal-700' 
+                ? 'bg-gradient-to-r from-blue-100 via-purple-100 via-pink-100 to-orange-100 text-blue-700' 
                 : 'bg-gray-100 text-gray-700'
             }`}>
               {user?.subscription_plan} Plan

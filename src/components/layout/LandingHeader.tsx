@@ -35,9 +35,6 @@ export const LandingHeader: React.FC = () => {
                 src="/socialflow-icon.png" 
                 alt="SocialFlow" 
                 className="h-8 w-8"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
               />
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                 SocialFlow
@@ -63,7 +60,7 @@ export const LandingHeader: React.FC = () => {
             {user ? (
               <Link
                 to="/app"
-                className="px-6 py-2 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg font-semibold hover:from-teal-600 hover:to-blue-700 transition-all"
+                className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:via-purple-600 hover:via-pink-600 hover:to-orange-600 transition-all"
               >
                 Dashboard
               </Link>
@@ -77,7 +74,7 @@ export const LandingHeader: React.FC = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-6 py-2 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg font-semibold hover:from-teal-600 hover:to-blue-700 transition-all"
+                  className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:via-purple-600 hover:via-pink-600 hover:to-orange-600 transition-all"
                 >
                   Start Free Trial
                 </Link>
@@ -112,7 +109,7 @@ export const LandingHeader: React.FC = () => {
                 {user ? (
                   <Link
                     to="/app"
-                    className="block px-3 py-2 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg font-semibold text-center"
+                    className="block px-3 py-2 bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 text-white rounded-lg font-semibold text-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Dashboard
@@ -128,7 +125,7 @@ export const LandingHeader: React.FC = () => {
                     </Link>
                     <Link
                       to="/register"
-                      className="block px-3 py-2 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg font-semibold text-center mt-2"
+                      className="block px-3 py-2 bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 text-white rounded-lg font-semibold text-center mt-2"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Start Free Trial
