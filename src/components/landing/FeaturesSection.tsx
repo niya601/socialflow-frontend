@@ -62,7 +62,7 @@ const features = [
 const platforms = [
   { icon: Instagram, name: 'Instagram', color: 'text-pink-600' },
   { icon: Facebook, name: 'Facebook', color: 'text-blue-600' },
-  { icon: Globe, name: 'TikTok', color: 'text-gray-900' },
+  { icon: null, name: 'TikTok', color: 'text-gray-900', customIcon: '/tik-tok.png' },
   { icon: Youtube, name: 'YouTube', color: 'text-red-600' },
 ];
 
@@ -98,11 +98,18 @@ export const FeaturesSection: React.FC = () => {
           
           <div className="flex justify-center items-center space-x-12">
             {platforms.map((platform) => {
-              const Icon = platform.icon;
               return (
                 <div key={platform.name} className="flex flex-col items-center group">
                   <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-gray-100 transition-colors">
-                    <Icon className={`w-8 h-8 ${platform.color}`} />
+                    {platform.customIcon ? (
+                      <img 
+                        src={platform.customIcon} 
+                        alt={platform.name}
+                        className="w-8 h-8"
+                      />
+                    ) : (
+                      platform.icon && <platform.icon className={`w-8 h-8 ${platform.color}`} />
+                    )}
                   </div>
                   <span className="font-medium text-gray-900">{platform.name}</span>
                 </div>
