@@ -7,11 +7,11 @@ import {
   Shield, 
   Globe,
   Instagram,
-  Hash,
   Youtube,
   Clock,
   Target,
-  TrendingUp
+  TrendingUp,
+  Facebook
 } from 'lucide-react';
 
 const features = [
@@ -61,7 +61,8 @@ const features = [
 
 const platforms = [
   { icon: Instagram, name: 'Instagram', color: 'text-pink-600' },
-  { icon: Hash, name: 'TikTok', color: 'text-gray-900' },
+  { icon: Facebook, name: 'Facebook', color: 'text-blue-600' },
+  { icon: Globe, name: 'TikTok', color: 'text-gray-900' },
   { icon: Youtube, name: 'YouTube', color: 'text-red-600' },
 ];
 
