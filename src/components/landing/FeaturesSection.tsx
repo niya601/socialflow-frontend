@@ -147,7 +147,6 @@ export const FeaturesSection: React.FC = () => {
                   <Icon className={`w-7 h-7 bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`} />
                 </div>
                 
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-teal-600 transition-colors">
                 <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
                   {feature.title}
                 </h3>
@@ -162,7 +161,6 @@ export const FeaturesSection: React.FC = () => {
 
         {/* Bottom CTA */}
         <div className="text-center mt-16">
-          <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-teal-50 to-blue-50 rounded-full border border-teal-200 mb-6">
           <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-50 to-pink-50 rounded-full border border-blue-200 mb-6">
             <Zap className="w-5 h-5 text-blue-600 mr-2" />
             <span className="text-blue-700 font-medium">Ready to get started?</span>
