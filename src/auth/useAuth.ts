@@ -27,6 +27,26 @@ export const useAuth = () => {
       setLoading(true);
       setError(null);
 
+      // Test connectivity first
+      try {
+        const testResponse = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/`, {
+          method: 'HEAD',
+          headers: {
+            'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
+          },
+        });
+        
+        if (!testResponse.ok) {
+          throw new Error(`Supabase service unavailable (${testResponse.status})`);
+        }
+      } catch (connectError: any) {
+        console.error('Connectivity test failed:', connectError);
+        if (connectError.message.includes('fetch')) {
+          throw new Error('Unable to connect to authentication service. This might be due to:\n• Network connectivity issues\n• Firewall blocking the connection\n• Development environment restrictions\n\nTry refreshing the page or check your network connection.');
+        }
+        throw connectError;
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -42,12 +62,15 @@ export const useAuth = () => {
         // Handle specific Supabase errors
         if (error.message.includes('fetch')) {
           throw new Error('Unable to connect to authentication service. Please check your internet connection.');
-        }
+          throw new Error('Network connection failed. Please check your internet connection and try again.');
         if (error.message.includes('Invalid login credentials')) {
           throw new Error('Invalid email or password. Please try again.');
         }
         if (error.message.includes('User already registered')) {
           throw new Error('An account with this email already exists. Please try logging in instead.');
+        }
+        if (error.message.includes('Invalid API key')) {
+          throw new Error('Authentication service configuration error. Please contact support.');
         }
         throw new Error(error.message || 'Registration failed. Please try again.');
       }
