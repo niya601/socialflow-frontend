@@ -69,6 +69,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
             value={formData.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
             className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
               validationErrors.email ? 'border-red-500' : 'border-gray-300'
             }`}
             placeholder="Enter your email"
@@ -92,6 +93,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
             value={formData.password}
             onChange={(e) => handleInputChange('password', e.target.value)}
             className={`w-full pl-10 pr-12 py-3 border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+            className={`w-full pl-10 pr-12 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
               validationErrors.password ? 'border-red-500' : 'border-gray-300'
             }`}
             placeholder="Enter your password"
@@ -115,14 +117,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
         <label className="flex items-center">
           <input
             type="checkbox"
-            className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
           />
           <span className="ml-2 text-sm text-gray-600">Remember me</span>
         </label>
         <button
           type="button"
           onClick={onForgotPassword}
-          className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
         >
           Forgot password?
         </button>
@@ -137,7 +139,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-xl font-semibold hover:from-teal-600 hover:to-blue-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
+        className="w-full bg-gradient-to-r from-blue-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-pink-600 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
       >
         {loading ? (
           <>
@@ -153,7 +155,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
         <button
           type="button"
           onClick={onSwitchToRegister}
-          className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
         >
           Don't have an account? Sign up
         </button>

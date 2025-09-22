@@ -12,19 +12,18 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
   const [authMode, setAuthMode] = useState<'login' | 'register' | 'forgot-password'>(mode);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-400 via-blue-500 to-purple-600 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
         <div className="p-8">
           {/* Logo and Title */}
           <div className="text-center mb-8">
             <Link to="/" className="inline-block">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl mb-4">
-                <Share2 className="w-8 h-8 text-white" />
-              </div>
+              <img 
+                src="/socialflow-logo.png" 
+                alt="SocialFlow" 
+                className="h-16 w-auto mx-auto mb-4"
+              />
             </Link>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-              SocialFlow
-            </h1>
             <p className="text-gray-600 mt-2">
               {authMode === 'login' ? 'Welcome back!' : 
                authMode === 'register' ? 'Create your account' : 

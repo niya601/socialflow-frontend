@@ -58,12 +58,11 @@ export const Footer: React.FC = () => {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl flex items-center justify-center">
-                <Share2 className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
-                SocialFlow
-              </h3>
+              <img 
+                src="/socialflow-logo.png" 
+                alt="SocialFlow" 
+                className="h-10 w-auto brightness-0 invert"
+              />
             </div>
             
             <p className="text-gray-300 mb-6 leading-relaxed">

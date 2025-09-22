@@ -30,12 +30,11 @@ export const LandingHeader: React.FC = () => {
         <div className="flex justify-between items-center py-6">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl flex items-center justify-center">
-              <Share2 className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-2xl font-bold text-white">
-              SocialFlow
-            </span>
+            <img 
+              src="/socialflow-logo.png" 
+              alt="SocialFlow" 
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}

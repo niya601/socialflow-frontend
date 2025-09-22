@@ -54,12 +54,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-blue-600 rounded-lg flex items-center justify-center">
-              <Share2 className="w-5 h-5 text-white" />
-            </div>
-            <h1 className="text-xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-              SocialFlow
-            </h1>
+            <img 
+              src="/socialflow-logo.png" 
+              alt="SocialFlow" 
+              className="h-8 w-auto"
+            />
           </div>
           <button
             onClick={onClose}

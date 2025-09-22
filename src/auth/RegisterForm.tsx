@@ -93,6 +93,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={formData.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
             className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
               validationErrors.email ? 'border-red-500' : 'border-gray-300'
             }`}
             placeholder="Enter your email"
@@ -116,6 +117,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={formData.companyName}
             onChange={(e) => handleInputChange('companyName', e.target.value)}
             className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
               validationErrors.companyName ? 'border-red-500' : 'border-gray-300'
             }`}
             placeholder="Enter your company name"
@@ -139,6 +141,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={formData.password}
             onChange={(e) => handleInputChange('password', e.target.value)}
             className={`w-full pl-10 pr-12 py-3 border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+            className={`w-full pl-10 pr-12 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
               validationErrors.password ? 'border-red-500' : 'border-gray-300'
             }`}
             placeholder="Enter your password"
@@ -170,6 +173,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={formData.confirmPassword}
             onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
             className={`w-full pl-10 pr-12 py-3 border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+            className={`w-full pl-10 pr-12 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
               validationErrors.confirmPassword ? 'border-red-500' : 'border-gray-300'
             }`}
             placeholder="Confirm your password"
@@ -196,7 +200,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
         <div className="grid grid-cols-2 gap-4">
           <label className={`relative flex flex-col p-4 border-2 rounded-xl cursor-pointer transition-all ${
             formData.subscriptionPlan === 'Free' 
-              ? 'border-teal-500 bg-teal-50' 
+              ? 'border-blue-500 bg-blue-50' 
               : 'border-gray-200 hover:border-gray-300'
           }`}>
             <input
@@ -214,7 +218,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
           
           <label className={`relative flex flex-col p-4 border-2 rounded-xl cursor-pointer transition-all ${
             formData.subscriptionPlan === 'Pro' 
-              ? 'border-teal-500 bg-teal-50' 
+              ? 'border-blue-500 bg-blue-50' 
               : 'border-gray-200 hover:border-gray-300'
           }`}>
             <input
@@ -241,7 +245,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-xl font-semibold hover:from-teal-600 hover:to-blue-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
+        className="w-full bg-gradient-to-r from-blue-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-pink-600 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
       >
         {loading ? (
           <>
@@ -257,7 +261,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
         <button
           type="button"
           onClick={onSwitchToLogin}
-          className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
         >
           Already have an account? Sign in
         </button>

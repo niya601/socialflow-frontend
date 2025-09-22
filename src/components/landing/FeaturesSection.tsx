@@ -80,7 +80,7 @@ export const FeaturesSection: React.FC = () => {
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Everything You Need to
-            <span className="block bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent">
               Dominate Social Media
             </span>
           </h2>
@@ -124,7 +124,7 @@ export const FeaturesSection: React.FC = () => {
             const Icon = stat.icon;
             return (
               <div key={stat.label} className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Icon className="w-8 h-8 text-white" />
                 </div>
                 <div className="text-4xl font-bold text-gray-900 mb-2">{stat.value}</div>
@@ -148,6 +148,7 @@ export const FeaturesSection: React.FC = () => {
                 </div>
                 
                 <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-teal-600 transition-colors">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
                   {feature.title}
                 </h3>
                 
@@ -162,8 +163,9 @@ export const FeaturesSection: React.FC = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-16">
           <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-teal-50 to-blue-50 rounded-full border border-teal-200 mb-6">
-            <Zap className="w-5 h-5 text-teal-600 mr-2" />
-            <span className="text-teal-700 font-medium">Ready to get started?</span>
+          <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-50 to-pink-50 rounded-full border border-blue-200 mb-6">
+            <Zap className="w-5 h-5 text-blue-600 mr-2" />
+            <span className="text-blue-700 font-medium">Ready to get started?</span>
           </div>
           
           <h3 className="text-3xl font-bold text-gray-900 mb-4">
