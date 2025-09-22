@@ -27,25 +27,10 @@ export const useAuth = () => {
       setLoading(true);
       setError(null);
 
-      // Test connectivity first
-      try {
-        const testResponse = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/`, {
-          method: 'HEAD',
-          headers: {
-            'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
-          },
-        });
-        
-        if (!testResponse.ok) {
-          throw new Error(`Supabase service unavailable (${testResponse.status})`);
-        }
-      } catch (connectError: any) {
-        console.error('Connectivity test failed:', connectError);
-        if (connectError.message.includes('fetch')) {
-          throw new Error('Unable to connect to authentication service. This might be due to:\n• Network connectivity issues\n• Firewall blocking the connection\n• Development environment restrictions\n\nTry refreshing the page or check your network connection.');
-        }
-        throw connectError;
-      }
+      console.log('Starting signup process...');
+      console.log('Email:', email);
+      console.log('Company:', companyName);
+      console.log('Plan:', subscriptionPlan);
 
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -58,53 +43,48 @@ export const useAuth = () => {
         },
       });
 
+      console.log('Supabase signup response:', { data, error });
+
       if (error) {
-        // Handle specific Supabase errors
-        if (error.message.includes('fetch')) {
-          throw new Error('Unable to connect to authentication service. Please check your internet connection.');
-          throw new Error('Network connection failed. Please check your internet connection and try again.');
-        }
-        if (error.message.includes('Invalid login credentials')) {
-          throw new Error('Invalid email or password. Please try again.');
-        }
-        if (error.message.includes('User already registered')) {
-          throw new Error('An account with this email already exists. Please try logging in instead.');
-        }
-        if (error.message.includes('Invalid API key')) {
-          throw new Error('Authentication service configuration error. Please contact support.');
-        }
-        throw new Error(error.message || 'Registration failed. Please try again.');
+        console.error('Supabase signup error:', error);
+        throw error;
       }
 
       if (data.user) {
-        // Try to create user profile, but don't fail if table doesn't exist
-        try {
-          const { error: profileError } = await supabase
-            .from('users')
-            .insert([
-              {
-                id: data.user.id,
-                email: data.user.email,
-                company_name: companyName,
-                subscription_plan: subscriptionPlan,
-              },
-            ]);
-
-          if (profileError) {
-            console.warn('Profile creation failed (table may not exist):', profileError);
-            // Continue without failing - user can still authenticate
-          }
-        } catch (profileError) {
-          console.warn('Profile creation failed:', profileError);
-          // Continue without failing
-        }
+        console.log('User created successfully:', data.user);
+        
+        // Create a user object for the app state
+        const user: User = {
+          id: data.user.id,
+          email: data.user.email || email,
+          company_name: companyName,
+          subscription_plan: subscriptionPlan,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        
+        setUser(user);
       }
 
       return { success: true };
     } catch (error: any) {
-      const errorMessage = error.message || 'Registration failed. Please try again.';
+      console.error('Signup error:', error);
+      let errorMessage = 'Registration failed. Please try again.';
+      
+      if (error.message) {
+        if (error.message.includes('fetch')) {
+          errorMessage = 'Unable to connect to authentication service. Please check your internet connection.';
+        } else if (error.message.includes('User already registered')) {
+          errorMessage = 'An account with this email already exists. Please try logging in instead.';
+        } else if (error.message.includes('Invalid API key')) {
+          errorMessage = 'Authentication service configuration error. Please contact support.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       setError(errorMessage);
-      return { success: false, error: error.message };
+      return { success: false, error: errorMessage };
     } finally {
       setLoading(false);
     }
@@ -115,27 +95,42 @@ export const useAuth = () => {
       setLoading(true);
       setError(null);
 
+      console.log('Starting signin process...');
+      console.log('Email:', email);
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
+      console.log('Supabase signin response:', { data, error });
+
       if (error) {
-        // Handle specific Supabase errors
-        if (error.message.includes('fetch')) {
-          throw new Error('Unable to connect to authentication service. Please check your internet connection.');
-        }
-        if (error.message.includes('Invalid login credentials')) {
-          throw new Error('Invalid email or password. Please check your credentials and try again.');
-        }
-        throw new Error(error.message || 'Login failed. Please try again.');
+        console.error('Supabase signin error:', error);
+        throw error;
+      }
+
+      if (data.user) {
+        console.log('User signed in successfully:', data.user);
       }
 
       return { success: true };
     } catch (error: any) {
-      const errorMessage = error.message || 'Login failed. Please try again.';
+      console.error('Signin error:', error);
+      let errorMessage = 'Login failed. Please try again.';
+      
+      if (error.message) {
+        if (error.message.includes('fetch')) {
+          errorMessage = 'Unable to connect to authentication service. Please check your internet connection.';
+        } else if (error.message.includes('Invalid login credentials')) {
+          errorMessage = 'Invalid email or password. Please check your credentials and try again.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       setError(errorMessage);
-      return { success: false, error: error.message };
+      return { success: false, error: errorMessage };
     } finally {
       setLoading(false);
     }
@@ -204,14 +199,29 @@ export const useAuth = () => {
   useEffect(() => {
     // Get initial session
     const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session?.user) {
-        const profile = await fetchUserProfile(session.user.id);
-        if (profile) {
-          setUser(profile);
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        console.log('Initial session check:', { session, error });
+        
+        if (error) {
+          console.error('Session check error:', error);
+          setLoading(false);
+          return;
         }
-      } else {
+      
+        if (session?.user) {
+          console.log('Found existing session for user:', session.user.email);
+          const profile = await fetchUserProfile(session.user.id);
+          if (profile) {
+            setUser(profile);
+          }
+        } else {
+          console.log('No existing session found');
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error getting initial session:', error);
         setLoading(false);
       }
     };
@@ -221,6 +231,8 @@ export const useAuth = () => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('Auth state change:', event, session?.user?.email);
+        
         if (event === 'SIGNED_IN' && session?.user) {
           const profile = await fetchUserProfile(session.user.id);
           if (profile) {
