@@ -56,14 +56,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
               <img 
-                src="/socialflow-logo.png" 
+                src="/socialflow-icon.png" 
                 alt="SocialFlow" 
-                className="h-8 w-auto"
+                className="h-6 w-6"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
                 }}
               />
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">
+              <span className="text-xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                 SocialFlow
               </span>
             </div>

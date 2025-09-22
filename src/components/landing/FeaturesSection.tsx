@@ -80,7 +80,7 @@ export const FeaturesSection: React.FC = () => {
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Everything You Need to
-            <span className="block bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-blue-600 via-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent">
               Dominate Social Media
             </span>
           </h2>
@@ -124,7 +124,7 @@ export const FeaturesSection: React.FC = () => {
             const Icon = stat.icon;
             return (
               <div key={stat.label} className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Icon className="w-8 h-8 text-white" />
                 </div>
                 <div className="text-4xl font-bold text-gray-900 mb-2">{stat.value}</div>

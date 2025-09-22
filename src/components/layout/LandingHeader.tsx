@@ -32,15 +32,14 @@ export const LandingHeader: React.FC = () => {
           <Link to="/" className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
               <img 
-                src="/socialflow-logo.png" 
+                src="/socialflow-icon.png" 
                 alt="SocialFlow" 
-                className="h-10 w-auto"
+                className="h-8 w-8"
                 onError={(e) => {
-                  console.log('Logo failed to load');
                   e.currentTarget.style.display = 'none';
                 }}
               />
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                 SocialFlow
               </span>
             </div>

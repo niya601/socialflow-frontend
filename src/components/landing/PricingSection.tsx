@@ -81,7 +81,7 @@ export const PricingSection: React.FC = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Simple, Transparent
-            <span className="block bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-blue-600 via-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent">
               Pricing
             </span>
           </h2>
@@ -95,7 +95,7 @@ export const PricingSection: React.FC = () => {
               onClick={() => setIsYearly(false)}
               className={`px-6 py-2 rounded-lg font-medium transition-all ${
                 !isYearly
-                  ? 'bg-gradient-to-r from-blue-500 to-pink-500 text-white shadow-sm'
+                  ? 'bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -105,7 +105,7 @@ export const PricingSection: React.FC = () => {
               onClick={() => setIsYearly(true)}
               className={`px-6 py-2 rounded-lg font-medium transition-all relative ${
                 isYearly
-                  ? 'bg-gradient-to-r from-blue-500 to-pink-500 text-white shadow-sm'
+                  ? 'bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -184,7 +184,7 @@ export const PricingSection: React.FC = () => {
                   to="/register"
                   className={`w-full py-4 px-6 rounded-xl font-semibold text-center transition-all transform hover:scale-105 block ${
                     plan.popular
-                      ? 'bg-gradient-to-r from-blue-500 to-pink-500 text-white hover:from-blue-600 hover:to-pink-600 shadow-lg hover:shadow-blue-500/25'
+                      ? 'bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 text-white hover:from-blue-600 hover:to-pink-600 shadow-lg hover:shadow-blue-500/25'
                       : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                   }`}
                 >

@@ -20,14 +20,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
             <Link to="/" className="inline-block">
               <div className="flex flex-col items-center">
                 <img 
-                  src="/socialflow-logo.png" 
+                  src="/socialflow-icon.png" 
                   alt="SocialFlow" 
-                  className="h-16 w-auto mx-auto mb-2"
+                  className="h-12 w-12 mx-auto mb-2"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}
                 />
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                   SocialFlow
                 </h1>
               </div>

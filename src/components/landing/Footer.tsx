@@ -60,9 +60,9 @@ export const Footer: React.FC = () => {
             <div className="flex items-center space-x-3 mb-6">
               <div className="flex items-center space-x-2">
                 <img 
-                  src="/socialflow-logo.png" 
+                  src="/socialflow-icon.png" 
                   alt="SocialFlow" 
-                  className="h-10 w-auto brightness-0 invert"
+                  className="h-8 w-8 brightness-0 invert"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}
