@@ -54,11 +54,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center space-x-3">
-            <img 
-              src="/socialflow-logo.png" 
-              alt="SocialFlow" 
-              className="h-8 w-auto"
-            />
+            <div className="flex items-center space-x-2">
+              <img 
+                src="/socialflow-logo.png" 
+                alt="SocialFlow" 
+                className="h-8 w-auto"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+              <span className="text-xl font-bold bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">
+                SocialFlow
+              </span>
+            </div>
           </div>
           <button
             onClick={onClose}

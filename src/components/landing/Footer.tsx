@@ -58,11 +58,19 @@ export const Footer: React.FC = () => {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
-              <img 
-                src="/socialflow-logo.png" 
-                alt="SocialFlow" 
-                className="h-10 w-auto brightness-0 invert"
-              />
+              <div className="flex items-center space-x-2">
+                <img 
+                  src="/socialflow-logo.png" 
+                  alt="SocialFlow" 
+                  className="h-10 w-auto brightness-0 invert"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+                <span className="text-2xl font-bold text-white">
+                  SocialFlow
+                </span>
+              </div>
             </div>
             
             <p className="text-gray-300 mb-6 leading-relaxed">

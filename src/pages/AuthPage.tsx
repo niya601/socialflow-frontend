@@ -18,11 +18,19 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
           {/* Logo and Title */}
           <div className="text-center mb-8">
             <Link to="/" className="inline-block">
-              <img 
-                src="/socialflow-logo.png" 
-                alt="SocialFlow" 
-                className="h-16 w-auto mx-auto mb-4"
-              />
+              <div className="flex flex-col items-center">
+                <img 
+                  src="/socialflow-logo.png" 
+                  alt="SocialFlow" 
+                  className="h-16 w-auto mx-auto mb-2"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">
+                  SocialFlow
+                </h1>
+              </div>
             </Link>
             <p className="text-gray-600 mt-2">
               {authMode === 'login' ? 'Welcome back!' : 
