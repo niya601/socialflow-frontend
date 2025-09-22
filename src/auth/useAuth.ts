@@ -27,6 +27,10 @@ export const useAuth = () => {
       setLoading(true);
       setError(null);
 
+      // Debug logging
+      console.log('Attempting signup with Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+      console.log('Using anon key (first 20 chars):', import.meta.env.VITE_SUPABASE_ANON_KEY?.substring(0, 20));
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -38,7 +42,10 @@ export const useAuth = () => {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase signup error:', error);
+        throw error;
+      }
 
       if (data.user) {
         // Create user profile in our custom table
@@ -53,11 +60,15 @@ export const useAuth = () => {
             },
           ]);
 
-        if (profileError) throw profileError;
+        if (profileError) {
+          console.error('Profile creation error:', profileError);
+          throw profileError;
+        }
       }
 
       return { success: true };
     } catch (error: any) {
+      console.error('Full signup error:', error);
       setError(error.message);
       return { success: false, error: error.message };
     } finally {
