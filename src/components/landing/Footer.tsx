@@ -249,7 +249,12 @@ export const Footer: React.FC = () => {
                   className="px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl font-semibold hover:from-teal-600 hover:to-blue-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center min-w-[120px]"
                 >
                   {loading ? (
-                    <>
+                    <>Loading...</>
+                  ) : (
+                    'Subscribe'
+                  )}
+                </button>
+              </form>
               
               {/* Success/Error Messages */}
               {subscriptionStatus === 'success' && (
@@ -268,15 +273,6 @@ export const Footer: React.FC = () => {
                 </div>
               )}
             </div>
-            
-            {subscriptionStatus === 'error' && error && (
-              <div className="mt-4 p-3 bg-red-100 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-700 font-medium">
-                  ❌ {error}
-                </p>
-              </div>
-            </div>
-            )}
           </div>
         </div>
       </div>
