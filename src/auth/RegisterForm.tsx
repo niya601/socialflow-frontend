@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, Building, User, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from './AuthProvider';
 import { validateEmail, validatePassword } from '../utils/helpers';
 
@@ -9,6 +10,7 @@ interface RegisterFormProps {
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
   const { signUp, loading, error } = useAuthContext();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -64,8 +66,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
       formData.subscriptionPlan
     );
     
-    if (!result.success) {
-      // Error is handled by the auth context
+    if (result.success) {
+      navigate('/app');
     }
   };
 

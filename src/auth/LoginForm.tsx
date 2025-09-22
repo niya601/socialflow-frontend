@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from './AuthProvider';
 import { validateEmail } from '../utils/helpers';
 
@@ -10,6 +11,7 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForgotPassword }) => {
   const { signIn, loading, error } = useAuthContext();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -40,8 +42,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
     if (!validateForm()) return;
 
     const result = await signIn(formData.email, formData.password);
-    if (!result.success) {
-      // Error is handled by the auth context
+    if (result.success) {
+      navigate('/app');
     }
   };
 

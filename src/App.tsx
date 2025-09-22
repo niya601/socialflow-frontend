@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Share2 } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuthContext } from './auth/AuthProvider';
-import { LoginForm } from './auth/LoginForm';
-import { RegisterForm } from './auth/RegisterForm';
+import { LandingPage } from './pages/LandingPage';
+import { AuthPage } from './pages/AuthPage';
+import { LandingHeader } from './components/layout/LandingHeader';
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
 import { DashboardStats } from './components/dashboard/DashboardStats';
@@ -44,61 +45,6 @@ const mockPosts: Post[] = [
     updated_at: '2025-01-09T15:30:00Z',
   },
 ];
-
-const AuthScreen: React.FC = () => {
-  const [authMode, setAuthMode] = useState<'login' | 'register' | 'forgot-password'>('login');
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-400 via-blue-500 to-purple-600 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
-        <div className="p-8">
-          {/* Logo and Title */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl mb-4">
-              <Share2 className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-              SocialFlow
-            </h1>
-            <p className="text-gray-600 mt-2">
-              {authMode === 'login' ? 'Welcome back!' : 
-               authMode === 'register' ? 'Create your account' : 
-               'Reset your password'}
-            </p>
-          </div>
-
-          {/* Auth Forms */}
-          {authMode === 'login' && (
-            <LoginForm
-              onSwitchToRegister={() => setAuthMode('register')}
-              onForgotPassword={() => setAuthMode('forgot-password')}
-            />
-          )}
-          
-          {authMode === 'register' && (
-            <RegisterForm
-              onSwitchToLogin={() => setAuthMode('login')}
-            />
-          )}
-          
-          {authMode === 'forgot-password' && (
-            <div className="text-center">
-              <p className="text-gray-600 mb-4">
-                Password reset functionality will be implemented with backend integration.
-              </p>
-              <button
-                onClick={() => setAuthMode('login')}
-                className="text-teal-600 hover:text-teal-700 font-medium"
-              >
-                Back to login
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -218,7 +164,7 @@ const Accounts: React.FC = () => {
   );
 };
 
-const AppContent: React.FC = () => {
+const AppDashboard: React.FC = () => {
   const { user, loading: authLoading } = useAuthContext();
   const [currentView, setCurrentView] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -270,9 +216,6 @@ const AppContent: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Share2 className="w-8 h-8 text-white" />
-          </div>
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600 mx-auto"></div>
           <p className="text-gray-600 mt-4">Loading SocialFlow...</p>
         </div>
@@ -281,7 +224,7 @@ const AppContent: React.FC = () => {
   }
 
   if (!user) {
-    return <AuthScreen />;
+    return <Navigate to="/login" replace />;
   }
 
   const renderCurrentView = () => {
@@ -355,6 +298,35 @@ const AppContent: React.FC = () => {
         </main>
       </div>
     </div>
+  );
+};
+
+const AppContent: React.FC = () => {
+  return (
+    <Router>
+      <Routes>
+        {/* Landing Page Route */}
+        <Route 
+          path="/" 
+          element={
+            <div>
+              <LandingHeader />
+              <LandingPage />
+            </div>
+          } 
+        />
+        
+        {/* Auth Routes */}
+        <Route path="/login" element={<AuthPage mode="login" />} />
+        <Route path="/register" element={<AuthPage mode="register" />} />
+        
+        {/* App Dashboard Routes */}
+        <Route path="/app/*" element={<AppDashboard />} />
+        
+        {/* Redirect old routes */}
+        <Route path="/dashboard" element={<Navigate to="/app" replace />} />
+      </Routes>
+    </Router>
   );
 };
 
