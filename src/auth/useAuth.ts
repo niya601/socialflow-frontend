@@ -112,6 +112,11 @@ export const useAuth = () => {
 
       if (data.user) {
         console.log('User signed in successfully:', data.user);
+        // Fetch user profile and set user state immediately
+        const profile = await fetchUserProfile(data.user.id);
+        if (profile) {
+          setUser(profile);
+        }
       }
 
       return { success: true };

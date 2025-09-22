@@ -198,6 +198,9 @@ const AppDashboard: React.FC = () => {
     },
   ]);
 
+  // Debug logging
+  console.log('AppDashboard - authLoading:', authLoading, 'user:', user);
+
   const addNotification = (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => {
     const newNotification: Notification = {
       ...notification,
@@ -224,6 +227,7 @@ const AppDashboard: React.FC = () => {
   };
 
   if (authLoading) {
+    console.log('AppDashboard - showing loading screen');
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -235,9 +239,11 @@ const AppDashboard: React.FC = () => {
   }
 
   if (!user) {
+    console.log('AppDashboard - no user, redirecting to login');
     return <Navigate to="/login" replace />;
   }
 
+  console.log('AppDashboard - rendering dashboard for user:', user.email);
   const renderCurrentView = () => {
     switch (currentView) {
       case 'dashboard':
