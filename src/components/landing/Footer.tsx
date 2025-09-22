@@ -1,6 +1,8 @@
 import React from 'react';
+import { useState } from 'react';
 import { Share2, Mail, Phone, MapPin, Twitter, Linkedin, Instagram, Github } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useNewsletter } from '../../hooks/useNewsletter';
 
 const handleSmoothScroll = (href: string) => {
   if (href.startsWith('#')) {
@@ -41,6 +43,33 @@ const socialLinks = [
 ];
 
 export const Footer: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [subscriptionStatus, setSubscriptionStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const { subscribe, loading, error } = useNewsletter();
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const result = await subscribe(email);
+    
+    if (result.success) {
+      setSubscriptionStatus('success');
+      setEmail(''); // Clear the input
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setSubscriptionStatus('idle');
+      }, 5000);
+    } else {
+      setSubscriptionStatus('error');
+      
+      // Reset error message after 5 seconds
+      setTimeout(() => {
+        setSubscriptionStatus('idle');
+      }, 5000);
+    }
+  };
+
   return (
     <footer className="bg-slate-900 text-white">
       {/* Main Footer */}
@@ -204,15 +233,50 @@ export const Footer: React.FC = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-              />
-              <button className="px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl font-semibold hover:from-teal-600 hover:to-blue-700 transition-all transform hover:scale-105">
-                Subscribe
-              </button>
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 w-full">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
+                  className="flex-1 px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                  required
+                />
+                <button 
+                  type="submit"
+                  disabled={loading || !email.trim()}
+                  className="px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl font-semibold hover:from-teal-600 hover:to-blue-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center min-w-[120px]"
+                >
+                  {loading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Subscribing...
+                    </>
+                  ) : (
+                    'Subscribe'
+                  )}
+                </button>
+              </form>
             </div>
+            
+            {/* Success/Error Messages */}
+            {subscriptionStatus === 'success' && (
+              <div className="mt-4 p-3 bg-green-100 border border-green-200 rounded-lg">
+                <p className="text-sm text-green-700 font-medium">
+                  🎉 Successfully subscribed! Thank you for joining our newsletter.
+                </p>
+              </div>
+            )}
+            
+            {subscriptionStatus === 'error' && error && (
+              <div className="mt-4 p-3 bg-red-100 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-700 font-medium">
+                  ❌ {error}
+                </p>
+              </div>
+            </div>
+            )}
           </div>
         </div>
       </div>
