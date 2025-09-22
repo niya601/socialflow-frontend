@@ -63,6 +63,7 @@ export const useAuth = () => {
         if (error.message.includes('fetch')) {
           throw new Error('Unable to connect to authentication service. Please check your internet connection.');
           throw new Error('Network connection failed. Please check your internet connection and try again.');
+        }
         if (error.message.includes('Invalid login credentials')) {
           throw new Error('Invalid email or password. Please try again.');
         }
