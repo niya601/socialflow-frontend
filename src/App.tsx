@@ -3,6 +3,17 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuthContext } from './auth/AuthProvider';
 import { LandingPage } from './pages/LandingPage';
 import { AuthPage } from './pages/AuthPage';
+import { FeaturesPage } from './pages/FeaturesPage';
+import { PricingPage } from './pages/PricingPage';
+import { AboutPage } from './pages/AboutPage';
+import { BlogPage } from './pages/BlogPage';
+import { ContactPage } from './pages/ContactPage';
+import { CommunityPage } from './pages/CommunityPage';
+import { TutorialsPage } from './pages/TutorialsPage';
+import { PrivacyPage } from './pages/PrivacyPage';
+import { TermsPage } from './pages/TermsPage';
+import { CookiesPage } from './pages/CookiesPage';
+import { SecurityPage } from './pages/SecurityPage';
 import { LandingHeader } from './components/layout/LandingHeader';
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
@@ -319,6 +330,19 @@ const AppContent: React.FC = () => {
         {/* Auth Routes */}
         <Route path="/login" element={<AuthPage mode="login" />} />
         <Route path="/register" element={<AuthPage mode="register" />} />
+        
+        {/* Static Pages */}
+        <Route path="/features" element={<FeaturesPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/tutorials" element={<TutorialsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/cookies" element={<CookiesPage />} />
+        <Route path="/security" element={<SecurityPage />} />
         
         {/* App Dashboard Routes */}
         <Route path="/app/*" element={<AppDashboard />} />

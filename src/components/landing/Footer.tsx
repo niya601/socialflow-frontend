@@ -13,32 +13,23 @@ const handleSmoothScroll = (href: string) => {
 
 const footerLinks = {
   product: [
-    { name: 'Features', href: '#features', type: 'scroll' },
-    { name: 'Pricing', href: '#pricing', type: 'scroll' },
-    { name: 'Integrations', href: '/app', type: 'route' },
-    { name: 'API', href: '/app', type: 'route' },
-    { name: 'Changelog', href: '/app', type: 'route' },
+    { name: 'Features', href: '/features', type: 'route' },
+    { name: 'Pricing', href: '/pricing', type: 'route' },
   ],
   company: [
-    { name: 'About Us', href: '#contact', type: 'scroll' },
-    { name: 'Careers', href: '#contact', type: 'scroll' },
-    { name: 'Press', href: '#contact', type: 'scroll' },
-    { name: 'Blog', href: '#contact', type: 'scroll' },
-    { name: 'Contact', href: '#contact', type: 'scroll' },
+    { name: 'About Us', href: '/about', type: 'route' },
+    { name: 'Blog', href: '/blog', type: 'route' },
+    { name: 'Contact', href: '/contact', type: 'route' },
   ],
   resources: [
-    { name: 'Help Center', href: '/app', type: 'route' },
-    { name: 'Documentation', href: '/app', type: 'route' },
-    { name: 'Tutorials', href: '/app', type: 'route' },
-    { name: 'Community', href: '/app', type: 'route' },
-    { name: 'Status', href: '/app', type: 'route' },
+    { name: 'Community', href: '/community', type: 'route' },
+    { name: 'Tutorials', href: '/tutorials', type: 'route' },
   ],
   legal: [
-    { name: 'Privacy Policy', href: '#contact', type: 'scroll' },
-    { name: 'Terms of Service', href: '#contact', type: 'scroll' },
-    { name: 'Cookie Policy', href: '#contact', type: 'scroll' },
-    { name: 'GDPR', href: '#contact', type: 'scroll' },
-    { name: 'Security', href: '#contact', type: 'scroll' },
+    { name: 'Privacy Policy', href: '/privacy', type: 'route' },
+    { name: 'Terms of Service', href: '/terms', type: 'route' },
+    { name: 'Cookie Policy', href: '/cookies', type: 'route' },
+    { name: 'Security', href: '/security', type: 'route' },
   ],
 };
 
@@ -60,14 +51,14 @@ export const Footer: React.FC = () => {
             <div className="flex items-center space-x-3 mb-6">
               <div className="flex items-center space-x-2">
                 <img 
-                  src="/socialflow-icon.png" 
+                  src="/image.png" 
                   alt="SocialFlow" 
-                  className="h-8 w-8 brightness-0 invert"
+                  className="h-8 w-8 object-contain"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}
                 />
-                <span className="text-2xl font-bold text-white">
+                <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 via-pink-400 to-orange-400">
                   SocialFlow
                 </span>
               </div>
