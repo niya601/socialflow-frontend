@@ -68,7 +68,8 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
     const widget = window.cloudinary.createUploadWidget(
       {
         cloudName,
-        ...(useSignedUpload ? { apiKey } : { uploadPreset }),
+        uploadPreset,
+        ...(useSignedUpload && { apiKey }),
         sources: ['local', 'url', 'camera'],
         multiple: maxFiles > 1,
         maxFiles,
@@ -113,10 +114,6 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         ],
         
         // Enable all editing tools
-        ...(useSignedUpload && {
-          use_filename: true,
-          unique_filename: true,
-        }),
         showPoweredBy: false,
         
         folder,
