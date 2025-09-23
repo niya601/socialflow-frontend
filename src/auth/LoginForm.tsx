@@ -42,11 +42,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
     if (!validateForm()) return;
 
     const result = await signIn(formData.email, formData.password);
-    if (result.success) {
-      // Don't navigate immediately - wait for auth state to update
-      // Navigation will happen automatically when user state is set
-      console.log('Sign in successful, waiting for auth state update...');
-    }
+    // Navigation will happen automatically when auth state updates
+    // No need to handle success case here
   };
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {

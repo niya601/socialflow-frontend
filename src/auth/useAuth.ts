@@ -11,7 +11,7 @@ export const useAuth = () => {
   });
 
   const setError = useCallback((error: string | null) => {
-    setAuthState(prev => ({ ...prev, error }));
+    setAuthState(prev => ({ ...prev, error, loading: false }));
   }, []);
 
   const setLoading = useCallback((loading: boolean) => {
@@ -19,7 +19,7 @@ export const useAuth = () => {
   }, []);
 
   const setUser = useCallback((user: User | null) => {
-    setAuthState(prev => ({ ...prev, user, loading: false }));
+    setAuthState(prev => ({ ...prev, user, loading: false, error: null }));
   }, []);
 
   const signUp = async (email: string, password: string, companyName: string, subscriptionPlan: 'Free' | 'Pro') => {
@@ -28,9 +28,6 @@ export const useAuth = () => {
       setError(null);
 
       console.log('Starting signup process...');
-      console.log('Email:', email);
-      console.log('Company:', companyName);
-      console.log('Plan:', subscriptionPlan);
 
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -42,8 +39,6 @@ export const useAuth = () => {
           },
         },
       });
-
-      console.log('Supabase signup response:', { data, error });
 
       if (error) {
         console.error('Supabase signup error:', error);
@@ -64,8 +59,10 @@ export const useAuth = () => {
         };
         
         setUser(user);
+        return { success: true };
       }
 
+      setLoading(false);
       return { success: true };
     } catch (error: any) {
       console.error('Signup error:', error);
@@ -85,8 +82,6 @@ export const useAuth = () => {
       
       setError(errorMessage);
       return { success: false, error: errorMessage };
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -96,14 +91,11 @@ export const useAuth = () => {
       setError(null);
 
       console.log('Starting signin process...');
-      console.log('Email:', email);
 
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-
-      console.log('Supabase signin response:', { data, error });
 
       if (error) {
         console.error('Supabase signin error:', error);
@@ -112,11 +104,12 @@ export const useAuth = () => {
 
       if (data.user) {
         console.log('User signed in successfully:', data.user);
-        // Don't set user here - let the auth state change handler do it
-        // This prevents race conditions and duplicate state updates
+        // The auth state change listener will handle setting the user
+        return { success: true };
       }
 
-      return { success: true };
+      setLoading(false);
+      return { success: false, error: 'Sign in failed' };
     } catch (error: any) {
       console.error('Signin error:', error);
       let errorMessage = 'Login failed. Please try again.';
@@ -133,8 +126,6 @@ export const useAuth = () => {
       
       setError(errorMessage);
       return { success: false, error: errorMessage };
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -146,8 +137,6 @@ export const useAuth = () => {
       setUser(null);
     } catch (error: any) {
       setError(error.message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -199,6 +188,8 @@ export const useAuth = () => {
   };
 
   useEffect(() => {
+    let mounted = true;
+
     // Get initial session
     const getInitialSession = async () => {
       try {
@@ -208,8 +199,9 @@ export const useAuth = () => {
         const connectionTest = await testSupabaseConnection();
         if (!connectionTest.success) {
           console.error('Supabase connection failed:', connectionTest.error);
-          setError('Unable to connect to authentication service. Please check your configuration.');
-          setLoading(false);
+          if (mounted) {
+            setError('Unable to connect to authentication service. Please check your configuration.');
+          }
           return;
         }
         
@@ -219,25 +211,27 @@ export const useAuth = () => {
         
         if (error) {
           console.error('Session check error:', error);
-          setError('Authentication service error: ' + error.message);
-          setLoading(false);
+          if (mounted) {
+            setError('Authentication service error: ' + error.message);
+          }
           return;
         }
       
-        if (session?.user) {
+        if (session?.user && mounted) {
           console.log('Found existing session for user:', session.user.email);
           const profile = await fetchUserProfile(session.user.id);
-          if (profile) {
+          if (profile && mounted) {
             setUser(profile);
           }
-        } else {
+        } else if (mounted) {
           console.log('No existing session found');
           setLoading(false);
         }
       } catch (error) {
         console.error('Error getting initial session:', error);
-        setError('Failed to initialize authentication. Please check your internet connection.');
-        setLoading(false);
+        if (mounted) {
+          setError('Failed to initialize authentication. Please check your internet connection.');
+        }
       }
     };
 
@@ -246,22 +240,33 @@ export const useAuth = () => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        if (!mounted) return;
+
         console.log('Auth state change:', event, session?.user?.email);
         
         if (event === 'SIGNED_IN' && session?.user) {
           const profile = await fetchUserProfile(session.user.id);
-          if (profile) {
+          if (profile && mounted) {
             setUser(profile);
-            setLoading(false); // Set loading to false when user is successfully set
           }
         } else if (event === 'SIGNED_OUT') {
-          setUser(null);
-          setLoading(false); // Set loading to false when signed out
+          if (mounted) {
+            setUser(null);
+          }
+        } else if (event === 'TOKEN_REFRESHED' && session?.user) {
+          // Handle token refresh
+          const profile = await fetchUserProfile(session.user.id);
+          if (profile && mounted) {
+            setUser(profile);
+          }
         }
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   return {

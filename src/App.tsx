@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuthContext } from './auth/AuthProvider';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { LandingPage } from './pages/LandingPage';
@@ -198,9 +198,19 @@ const AppDashboard: React.FC = () => {
       read: false,
     },
   ]);
+  const navigate = useNavigate();
 
-  // Debug logging
-  console.log('AppDashboard - authLoading:', authLoading, 'user:', user?.email);
+  // Handle navigation when user state changes
+  useEffect(() => {
+    if (!authLoading && user) {
+      // User is authenticated, stay on dashboard
+      console.log('User authenticated, staying on dashboard');
+    } else if (!authLoading && !user) {
+      // User is not authenticated, redirect to login
+      console.log('User not authenticated, redirecting to login');
+      navigate('/login', { replace: true });
+    }
+  }, [user, authLoading, navigate]);
 
   const addNotification = (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => {
     const newNotification: Notification = {
@@ -228,7 +238,6 @@ const AppDashboard: React.FC = () => {
   };
 
   if (authLoading) {
-    console.log('AppDashboard - showing loading screen');
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -239,9 +248,9 @@ const AppDashboard: React.FC = () => {
     );
   }
 
+  // Don't render anything if not authenticated - useEffect will handle redirect
   if (!user) {
-    console.log('AppDashboard - no user, redirecting to login');
-    return <Navigate to="/login" replace />;
+    return null;
   }
 
   const renderCurrentView = () => {
