@@ -110,10 +110,8 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         ],
         
         // Enable all editing tools
-        publicId: null,
         use_filename: true,
         unique_filename: true,
-        overwrite: false,
         
         // UI customization for better editing experience
         showInsecurePreview: false,
