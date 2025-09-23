@@ -29,9 +29,11 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
 
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+  const apiKey = import.meta.env.VITE_CLOUDINARY_API_KEY;
 
-  // Check if Cloudinary is properly configured
+  // Check if Cloudinary is properly configured (API key is optional for unsigned uploads)
   const isConfigured = cloudName && uploadPreset && cloudName !== 'your_cloudinary_cloud_name' && uploadPreset !== 'your_upload_preset';
+  const useSignedUpload = apiKey && apiKey !== 'your_cloudinary_api_key_here';
 
   useEffect(() => {
     // Load Cloudinary widget script only if properly configured
@@ -66,7 +68,7 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
     const widget = window.cloudinary.createUploadWidget(
       {
         cloudName,
-        uploadPreset,
+        ...(useSignedUpload ? { apiKey } : { uploadPreset }),
         sources: ['local', 'url', 'camera'],
         multiple: maxFiles > 1,
         maxFiles,
@@ -78,30 +80,31 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi'],
         // Enhanced editing capabilities
         cropping: true,
-        croppingAspectRatio: null,
-        croppingDefaultSelectionRatio: 1,
-        croppingShowDimensions: true,
-        croppingCoordinatesMode: 'custom',
         showSkipCropButton: true,
-        showAdvancedOptions: true,
-        showCompletedButton: true,
-        showUploadMoreButton: false,
         
         // Image editing features
-        imageEditingMode: 'advanced',
-        showImageEditingOptions: true,
-        imageEditingOptions: {
-          crop: true,
-          resize: true,
-          rotate: true,
-          flip: true,
-          filters: true,
-          adjustments: true,
-          effects: true,
-          overlays: true,
-          text: true,
-          background: true
-        },
+        ...(useSignedUpload && {
+          // Advanced editing features only available with signed uploads
+          imageEditingMode: 'advanced',
+          showImageEditingOptions: true,
+          imageEditingOptions: {
+            crop: true,
+            resize: true,
+            rotate: true,
+            flip: true,
+            filters: true,
+            adjustments: true,
+            effects: true,
+            overlays: true,
+            text: true,
+            background: true
+          },
+          showAdvancedOptions: true,
+          croppingAspectRatio: null,
+          croppingDefaultSelectionRatio: 1,
+          croppingShowDimensions: true,
+          croppingCoordinatesMode: 'custom',
+        }),
         
         // Advanced transformation options
         eager: [
@@ -112,51 +115,7 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         // Enable all editing tools
         use_filename: true,
         unique_filename: true,
-        
-        // UI customization for better editing experience
-        showInsecurePreview: false,
         showPoweredBy: false,
-        theme: 'white',
-        
-        // Enhanced styling
-        styles: {
-          palette: {
-            window: '#FFFFFF',
-            windowBorder: '#90A0B3',
-            tabIcon: '#0078FF',
-            menuIcons: '#5A616A',
-            textDark: '#000000',
-            textLight: '#FFFFFF',
-            link: '#0078FF',
-            action: '#FF620C',
-            inactiveTabIcon: '#0E2F5A',
-            error: '#F44235',
-            inProgress: '#0078FF',
-            complete: '#20B832',
-            sourceBg: '#E4EBF1',
-            menuIcons: '#5A616A'
-          },
-          fonts: {
-            default: null,
-            "'Fira Sans', sans-serif": {
-              url: 'https://fonts.googleapis.com/css?family=Fira+Sans',
-              active: true
-            }
-          }
-        },
-        
-        // Preprocessing for better editing
-        preprocessing: {
-          sources: {
-            local: {
-              options: {
-                showAdvancedOptions: true,
-                showSkipCropButton: true,
-                croppingValidateDimensions: false
-              }
-            }
-          }
-        },
         
         folder,
         tags,
