@@ -152,20 +152,6 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
               return;
             }
 
-    const widget = window.cloudinary.createUploadWidget(
-      {
-        cloudName,
-        uploadPreset,
-        apiKey,
-        sources: ['local', 'url', 'camera'],
-        multiple: maxFiles > 1,
-        maxFiles,
-        maxFileSize: 10000000, // 10MB
-        maxImageWidth: 2000,
-        maxImageHeight: 2000,
-        maxVideoFileSize: 50000000, // 50MB
-        resourceType,
-        clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi'],
             if (result.event === 'success') {
               console.log('Upload successful:', result.info);
               onUpload(result.info);
