@@ -202,15 +202,15 @@ const AppDashboard: React.FC = () => {
 
   // Handle navigation when user state changes
   useEffect(() => {
-    console.log('AppDashboard effect - authLoading:', authLoading, 'user:', !!user);
+    console.log('AppDashboard effect - authLoading:', authLoading, 'user:', !!user, 'pathname:', window.location.pathname);
     
-    if (!authLoading && user) {
-      // User is authenticated, stay on dashboard
-      console.log('User authenticated, staying on dashboard');
-    } else if (!authLoading && !user) {
+    if (!authLoading && !user) {
       // User is not authenticated, redirect to login
       console.log('User not authenticated, redirecting to login');
       navigate('/login', { replace: true });
+    } else if (!authLoading && user) {
+      // User is authenticated, stay on dashboard
+      console.log('User authenticated, staying on dashboard');
     }
   }, [user, authLoading, navigate]);
 

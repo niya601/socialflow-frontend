@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from './AuthProvider';
 import { validateEmail } from '../utils/helpers';
 
@@ -10,6 +11,7 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForgotPassword }) => {
   const { signIn, error } = useAuthContext();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -49,7 +51,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
       
       if (result.success) {
         console.log('Signin successful, user should be set');
-        // Don't navigate here - let the auth state change handle it
+        // Navigate immediately after successful signin
+        navigate('/app', { replace: true });
       }
     } catch (error) {
       console.error('Signin error in form:', error);
