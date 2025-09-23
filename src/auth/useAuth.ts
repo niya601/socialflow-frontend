@@ -122,13 +122,22 @@ export const useAuth = () => {
       // Always clear local state regardless of server response
       // This handles cases where the session is already expired/invalid
       setUser(null);
-      if (error && !error.message.includes('session_not_found')) {
-        console.warn('Logout warning:', error.message);
+      if (error) {
+        // Don't treat session_not_found as an error - it means user was already logged out
+        if (error.message && error.message.includes('session_not_found')) {
+          console.log('Session already expired, logout successful');
+        } else {
+          console.warn('Logout warning:', error.message);
+        }
       }
     } catch (error: any) {
-      // Even if logout fails, clear local state to reflect user's intent
+      // Check if it's a session_not_found error in the catch block too
       setUser(null);
-      console.warn('Logout error (local state cleared):', error.message);
+      if (error.message && error.message.includes('session_not_found')) {
+        console.log('Session already expired, logout successful');
+      } else {
+        console.warn('Logout error (local state cleared):', error.message);
+      }
     }
   };
 

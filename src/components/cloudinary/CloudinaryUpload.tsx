@@ -113,8 +113,10 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         ],
         
         // Enable all editing tools
-        use_filename: true,
-        unique_filename: true,
+        ...(useSignedUpload && {
+          use_filename: true,
+          unique_filename: true,
+        }),
         showPoweredBy: false,
         
         folder,
