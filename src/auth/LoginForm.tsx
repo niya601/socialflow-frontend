@@ -43,8 +43,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
 
     const result = await signIn(formData.email, formData.password);
     if (result.success) {
-      // Navigate immediately - the auth state will be handled by the auth provider
-      navigate('/app', { replace: true });
+      // Don't navigate immediately - wait for auth state to update
+      // Navigation will happen automatically when user state is set
+      console.log('Sign in successful, waiting for auth state update...');
     }
   };
 

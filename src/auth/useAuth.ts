@@ -252,9 +252,11 @@ export const useAuth = () => {
           const profile = await fetchUserProfile(session.user.id);
           if (profile) {
             setUser(profile);
+            setLoading(false); // Set loading to false when user is successfully set
           }
         } else if (event === 'SIGNED_OUT') {
           setUser(null);
+          setLoading(false); // Set loading to false when signed out
         }
       }
     );
