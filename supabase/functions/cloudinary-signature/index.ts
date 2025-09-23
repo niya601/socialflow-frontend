@@ -103,7 +103,6 @@ serve(async (req: Request) => {
     if (body.folder) params.folder = body.folder
     if (body.tags && body.tags.length > 0) params.tags = body.tags.join(',')
     if (body.resource_type) params.resource_type = body.resource_type
-    if (body.upload_preset) params.upload_preset = body.upload_preset
     if (body.use_filename !== undefined) params.use_filename = body.use_filename
     if (body.unique_filename !== undefined) params.unique_filename = body.unique_filename
     if (body.public_id) params.public_id = body.public_id
