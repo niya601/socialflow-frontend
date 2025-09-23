@@ -66,6 +66,8 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
           tags,
           resource_type: resourceType,
           upload_preset: uploadPreset,
+          use_filename: true,
+          unique_filename: false,
         },
       });
 
@@ -116,10 +118,6 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
             resourceType,
             clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi'],
             
-            // Signed upload parameters (now allowed)
-            use_filename: true,
-            unique_filename: false,
-            
             // Enhanced editing capabilities for signed uploads
             cropping: true,
             showSkipCropButton: true,
@@ -139,9 +137,6 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
             
             // Enable all editing tools
             showPoweredBy: false,
-            
-            folder,
-            tags,
           },
           (error, result) => {
             setLoading(false);
