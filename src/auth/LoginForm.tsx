@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from './AuthProvider';
 import { validateEmail } from '../utils/helpers';
 
@@ -11,13 +10,13 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForgotPassword }) => {
   const { signIn, loading, error } = useAuthContext();
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
@@ -40,10 +39,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
     e.preventDefault();
     
     if (!validateForm()) return;
+    if (isSubmitting) return; // Prevent double submission
 
-    const result = await signIn(formData.email, formData.password);
-    // Navigation will happen automatically when auth state updates
-    // No need to handle success case here
+    setIsSubmitting(true);
+    
+    try {
+      const result = await signIn(formData.email, formData.password);
+      // Don't handle navigation here - let the auth state change handle it
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
@@ -53,6 +58,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
       setValidationErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
+
+  const isLoading = loading || isSubmitting;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -72,6 +79,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
             }`}
             placeholder="Enter your email"
             aria-describedby={validationErrors.email ? 'email-error' : undefined}
+            disabled={isLoading}
           />
         </div>
         {validationErrors.email && (
@@ -95,12 +103,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
             }`}
             placeholder="Enter your password"
             aria-describedby={validationErrors.password ? 'password-error' : undefined}
+            disabled={isLoading}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
+            disabled={isLoading}
           >
             {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
@@ -115,6 +125,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
           <input
             type="checkbox"
             className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            disabled={isLoading}
           />
           <span className="ml-2 text-sm text-gray-600">Remember me</span>
         </label>
@@ -122,6 +133,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
           type="button"
           onClick={onForgotPassword}
           className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+          disabled={isLoading}
         >
           Forgot password?
         </button>
@@ -135,10 +147,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
 
       <button
         type="submit"
-        disabled={loading}
+        disabled={isLoading}
         className="w-full bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-pink-600 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
       >
-        {loading ? (
+        {isLoading ? (
           <>
             <Loader2 className="w-5 h-5 mr-2 animate-spin" />
             Signing in...
@@ -153,6 +165,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
           type="button"
           onClick={onSwitchToRegister}
           className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+          disabled={isLoading}
         >
           Don't have an account? Sign up
         </button>

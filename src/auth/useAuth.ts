@@ -27,8 +27,6 @@ export const useAuth = () => {
       setLoading(true);
       setError(null);
 
-      console.log('Starting signup process...');
-
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -41,14 +39,10 @@ export const useAuth = () => {
       });
 
       if (error) {
-        console.error('Supabase signup error:', error);
         throw error;
       }
 
       if (data.user) {
-        console.log('User created successfully:', data.user);
-        
-        // Create a user object for the app state
         const user: User = {
           id: data.user.id,
           email: data.user.email || email,
@@ -65,7 +59,6 @@ export const useAuth = () => {
       setLoading(false);
       return { success: true };
     } catch (error: any) {
-      console.error('Signup error:', error);
       let errorMessage = 'Registration failed. Please try again.';
       
       if (error.message) {
@@ -90,28 +83,19 @@ export const useAuth = () => {
       setLoading(true);
       setError(null);
 
-      console.log('Starting signin process...');
-
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
-        console.error('Supabase signin error:', error);
         throw error;
       }
 
-      if (data.user) {
-        console.log('User signed in successfully:', data.user);
-        // The auth state change listener will handle setting the user
-        return { success: true };
-      }
-
-      setLoading(false);
-      return { success: false, error: 'Sign in failed' };
+      // Don't set user here - let the auth state change handler do it
+      // Just return success
+      return { success: true };
     } catch (error: any) {
-      console.error('Signin error:', error);
       let errorMessage = 'Login failed. Please try again.';
       
       if (error.message) {
@@ -161,8 +145,6 @@ export const useAuth = () => {
         .single();
 
       if (error) {
-        console.warn('User profile fetch failed (table may not exist):', error);
-        // Return a default user profile if table doesn't exist
         return {
           id: userId,
           email: 'user@example.com',
@@ -174,8 +156,6 @@ export const useAuth = () => {
       }
       return data;
     } catch (error: any) {
-      console.error('Error fetching user profile:', error);
-      // Return a default user profile as fallback
       return {
         id: userId,
         email: 'user@example.com',
@@ -190,15 +170,10 @@ export const useAuth = () => {
   useEffect(() => {
     let mounted = true;
 
-    // Get initial session
     const getInitialSession = async () => {
       try {
-        console.log('Getting initial session...');
-        
-        // Test Supabase connection first
         const connectionTest = await testSupabaseConnection();
         if (!connectionTest.success) {
-          console.error('Supabase connection failed:', connectionTest.error);
           if (mounted) {
             setError('Unable to connect to authentication service. Please check your configuration.');
           }
@@ -207,10 +182,7 @@ export const useAuth = () => {
         
         const { data: { session }, error } = await supabase.auth.getSession();
         
-        console.log('Initial session check:', { session, error });
-        
         if (error) {
-          console.error('Session check error:', error);
           if (mounted) {
             setError('Authentication service error: ' + error.message);
           }
@@ -218,17 +190,14 @@ export const useAuth = () => {
         }
       
         if (session?.user && mounted) {
-          console.log('Found existing session for user:', session.user.email);
           const profile = await fetchUserProfile(session.user.id);
           if (profile && mounted) {
             setUser(profile);
           }
         } else if (mounted) {
-          console.log('No existing session found');
           setLoading(false);
         }
       } catch (error) {
-        console.error('Error getting initial session:', error);
         if (mounted) {
           setError('Failed to initialize authentication. Please check your internet connection.');
         }
@@ -237,13 +206,10 @@ export const useAuth = () => {
 
     getInitialSession();
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!mounted) return;
 
-        console.log('Auth state change:', event, session?.user?.email);
-        
         if (event === 'SIGNED_IN' && session?.user) {
           const profile = await fetchUserProfile(session.user.id);
           if (profile && mounted) {
@@ -254,7 +220,6 @@ export const useAuth = () => {
             setUser(null);
           }
         } else if (event === 'TOKEN_REFRESHED' && session?.user) {
-          // Handle token refresh
           const profile = await fetchUserProfile(session.user.id);
           if (profile && mounted) {
             setUser(profile);
