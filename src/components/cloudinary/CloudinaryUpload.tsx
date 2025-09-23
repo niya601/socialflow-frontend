@@ -30,9 +30,12 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
+  // Check if Cloudinary is properly configured
+  const isConfigured = cloudName && uploadPreset && cloudName !== 'your_cloudinary_cloud_name' && uploadPreset !== 'your_upload_preset';
+
   useEffect(() => {
-    // Load Cloudinary widget script
-    if (!window.cloudinary) {
+    // Load Cloudinary widget script only if properly configured
+    if (isConfigured && !window.cloudinary) {
       const script = document.createElement('script');
       script.src = 'https://widget.cloudinary.com/v2.0/global/all.js';
       script.async = true;
@@ -44,11 +47,11 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         widgetRef.current.destroy();
       }
     };
-  }, []);
+  }, [isConfigured]);
 
   const openWidget = () => {
-    if (!cloudName || !uploadPreset) {
-      setError('Cloudinary configuration is missing');
+    if (!isConfigured) {
+      setError('Cloudinary is not configured. Please add VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET to your .env file.');
       return;
     }
 
@@ -74,7 +77,32 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         resourceType,
         clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi'],
         cropping: true,
+        croppingAspectRatio: null, // Allow free cropping
+        croppingDefaultSelectionRatio: 1,
+        croppingShowDimensions: true,
+        croppingCoordinatesMode: 'custom',
         showSkipCropButton: true,
+        showAdvancedOptions: true,
+        showInsecurePreview: false,
+        showPoweredBy: false,
+        theme: 'minimal',
+        styles: {
+          palette: {
+            window: '#FFFFFF',
+            windowBorder: '#90A0B3',
+            tabIcon: '#0078FF',
+            menuIcons: '#5A616A',
+            textDark: '#000000',
+            textLight: '#FFFFFF',
+            link: '#0078FF',
+            action: '#FF620C',
+            inactiveTabIcon: '#0E2F5A',
+            error: '#F44235',
+            inProgress: '#0078FF',
+            complete: '#20B832',
+            sourceBg: '#E4EBF1'
+          }
+        },
         folder,
         tags,
       },
@@ -82,11 +110,13 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         setLoading(false);
         
         if (error) {
-          setError(error.message || 'Upload failed');
+          console.error('Cloudinary upload error:', error);
+          setError(error.message || 'Upload failed. Please check your Cloudinary configuration.');
           return;
         }
 
         if (result.event === 'success') {
+          console.log('Upload successful:', result.info);
           onUpload(result.info);
         }
       }
@@ -117,6 +147,29 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Show configuration message if not properly set up
+  if (!isConfigured) {
+    return (
+      <div className="space-y-4">
+        <div className="p-6 border-2 border-dashed border-yellow-300 rounded-xl bg-yellow-50">
+          <div className="flex flex-col items-center text-center">
+            <Upload className="w-8 h-8 text-yellow-600 mb-2" />
+            <p className="text-sm text-yellow-800 font-medium mb-2">
+              Cloudinary Not Configured
+            </p>
+            <p className="text-xs text-yellow-700 mb-4">
+              To enable media uploads, add these to your .env file:
+            </p>
+            <div className="bg-yellow-100 p-3 rounded-lg text-left text-xs font-mono text-yellow-800">
+              VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name<br/>
+              VITE_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (currentMedia) {
     return (
       <div className="space-y-4">
@@ -142,6 +195,17 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
           >
             <X className="w-4 h-4" />
           </button>
+          
+          {/* Edit button for images */}
+          {currentMedia.resource_type === 'image' && (
+            <button
+              onClick={openWidget}
+              className="absolute top-2 left-2 p-1 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+              aria-label="Edit media"
+            >
+              <Upload className="w-4 h-4" />
+            </button>
+          )}
         </div>
         
         <div className="bg-gray-50 rounded-lg p-3">
@@ -186,7 +250,10 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
             {loading ? 'Uploading...' : 'Click to upload media'}
           </p>
           <p className="text-xs text-gray-500 mt-1">
-            Supports images and videos up to 10MB
+            Supports images (10MB) and videos (50MB)
+          </p>
+          <p className="text-xs text-gray-400 mt-1">
+            Includes cropping, filters, and editing tools
           </p>
         </div>
       </button>
