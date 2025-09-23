@@ -119,10 +119,16 @@ export const useAuth = () => {
     try {
       setLoading(true);
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      // Always clear local state regardless of server response
+      // This handles cases where the session is already expired/invalid
       setUser(null);
+      if (error && !error.message.includes('session_not_found')) {
+        console.warn('Logout warning:', error.message);
+      }
     } catch (error: any) {
-      setError(error.message);
+      // Even if logout fails, clear local state to reflect user's intent
+      setUser(null);
+      console.warn('Logout error (local state cleared):', error.message);
     }
   };
 
