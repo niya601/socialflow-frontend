@@ -112,11 +112,8 @@ export const useAuth = () => {
 
       if (data.user) {
         console.log('User signed in successfully:', data.user);
-        // Fetch user profile and set user state immediately
-        const profile = await fetchUserProfile(data.user.id);
-        if (profile) {
-          setUser(profile);
-        }
+        // Don't set user here - let the auth state change handler do it
+        // This prevents race conditions and duplicate state updates
       }
 
       return { success: true };

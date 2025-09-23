@@ -65,6 +65,7 @@ export const LandingHeader: React.FC = () => {
               <Link
                 to="/app"
                 className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:via-purple-600 hover:via-pink-600 hover:to-orange-600 transition-all"
+                replace
               >
                 Dashboard
               </Link>

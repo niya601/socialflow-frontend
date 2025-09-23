@@ -67,7 +67,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
     );
     
     if (result.success) {
-      navigate('/app');
+      navigate('/app', { replace: true });
     }
   };
 

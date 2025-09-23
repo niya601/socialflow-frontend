@@ -200,7 +200,7 @@ const AppDashboard: React.FC = () => {
   ]);
 
   // Debug logging
-  console.log('AppDashboard - authLoading:', authLoading, 'user:', user);
+  console.log('AppDashboard - authLoading:', authLoading, 'user:', user?.email);
 
   const addNotification = (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => {
     const newNotification: Notification = {
@@ -244,7 +244,6 @@ const AppDashboard: React.FC = () => {
     return <Navigate to="/login" replace />;
   }
 
-  console.log('AppDashboard - rendering dashboard for user:', user.email);
   const renderCurrentView = () => {
     switch (currentView) {
       case 'dashboard':

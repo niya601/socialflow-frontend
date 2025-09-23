@@ -43,10 +43,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onForg
 
     const result = await signIn(formData.email, formData.password);
     if (result.success) {
-      // Add a small delay to ensure state is updated
-      setTimeout(() => {
-        navigate('/app');
-      }, 100);
+      // Navigate immediately - the auth state will be handled by the auth provider
+      navigate('/app', { replace: true });
     }
   };
 
