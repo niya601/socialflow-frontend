@@ -9,7 +9,10 @@ console.log('Anon Key exists:', !!supabaseAnonKey);
 console.log('Anon Key length:', supabaseAnonKey?.length);
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+  console.error('Missing Supabase environment variables');
+  console.error('VITE_SUPABASE_URL:', supabaseUrl);
+  console.error('VITE_SUPABASE_ANON_KEY exists:', !!supabaseAnonKey);
+  throw new Error('Missing Supabase environment variables. Please check your .env file.');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {

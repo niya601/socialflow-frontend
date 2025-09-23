@@ -205,6 +205,7 @@ export const useAuth = () => {
     // Get initial session
     const getInitialSession = async () => {
       try {
+        console.log('Getting initial session...');
         const { data: { session }, error } = await supabase.auth.getSession();
         
         console.log('Initial session check:', { session, error });
@@ -227,6 +228,7 @@ export const useAuth = () => {
         }
       } catch (error) {
         console.error('Error getting initial session:', error);
+        setError('Failed to initialize authentication');
         setLoading(false);
       }
     };
