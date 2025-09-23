@@ -31,9 +31,11 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
   const apiKey = import.meta.env.VITE_CLOUDINARY_API_KEY;
 
-  // Check if Cloudinary is properly configured (API key is optional for unsigned uploads)
-  const isConfigured = cloudName && uploadPreset && cloudName !== 'your_cloudinary_cloud_name' && uploadPreset !== 'your_upload_preset';
-  const useSignedUpload = apiKey && apiKey !== 'your_cloudinary_api_key_here';
+  // Check if Cloudinary is properly configured for signed uploads
+  const isConfigured = cloudName && uploadPreset && apiKey && 
+    cloudName !== 'your_cloudinary_cloud_name' && 
+    uploadPreset !== 'your_upload_preset' &&
+    apiKey !== 'your_cloudinary_api_key_here';
 
   useEffect(() => {
     // Load Cloudinary widget script only if properly configured
@@ -53,7 +55,7 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
 
   const openWidget = () => {
     if (!isConfigured) {
-      setError('Cloudinary is not configured. Please add VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET to your .env file.');
+      setError('Cloudinary is not configured. Please add VITE_CLOUDINARY_CLOUD_NAME, VITE_CLOUDINARY_UPLOAD_PRESET, and VITE_CLOUDINARY_API_KEY to your .env file.');
       return;
     }
 
@@ -69,7 +71,7 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
       {
         cloudName,
         uploadPreset,
-        ...(useSignedUpload && { apiKey }),
+        apiKey,
         sources: ['local', 'url', 'camera'],
         multiple: maxFiles > 1,
         maxFiles,
@@ -79,39 +81,41 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         maxVideoFileSize: 50000000, // 50MB
         resourceType,
         clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi'],
-        // Enhanced editing capabilities
+        
+        // Enhanced editing capabilities for signed uploads
         cropping: true,
         showSkipCropButton: true,
         
-        // Image editing features
-        ...(useSignedUpload && {
-          // Advanced editing features only available with signed uploads
-          imageEditingMode: 'advanced',
-          showImageEditingOptions: true,
-          imageEditingOptions: {
-            crop: true,
-            resize: true,
-            rotate: true,
-            flip: true,
-            filters: true,
-            adjustments: true,
-            effects: true,
-            overlays: true,
-            text: true,
-            background: true
-          },
-          showAdvancedOptions: true,
-          croppingAspectRatio: null,
-          croppingDefaultSelectionRatio: 1,
-          croppingShowDimensions: true,
-          croppingCoordinatesMode: 'custom',
-        }),
+        // Advanced editing features for signed uploads
+        imageEditingMode: 'advanced',
+        showImageEditingOptions: true,
+        imageEditingOptions: {
+          crop: true,
+          resize: true,
+          rotate: true,
+          flip: true,
+          filters: true,
+          adjustments: true,
+          effects: true,
+          overlays: true,
+          text: true,
+          background: true
+        },
+        showAdvancedOptions: true,
+        croppingAspectRatio: null,
+        croppingDefaultSelectionRatio: 1,
+        croppingShowDimensions: true,
+        croppingCoordinatesMode: 'custom',
         
         // Advanced transformation options
         eager: [
           { width: 400, height: 400, crop: 'fill', quality: 'auto' },
           { width: 800, height: 600, crop: 'fit', quality: 'auto' }
         ],
+        
+        // Signed upload specific parameters
+        use_filename: true,
+        unique_filename: false,
         
         // Enable all editing tools
         showPoweredBy: false,
@@ -171,11 +175,12 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
               Cloudinary Not Configured
             </p>
             <p className="text-xs text-yellow-700 mb-4">
-              To enable media uploads, add these to your .env file:
+              To enable signed media uploads, add these to your .env file:
             </p>
             <div className="bg-yellow-100 p-3 rounded-lg text-left text-xs font-mono text-yellow-800">
               VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name<br/>
-              VITE_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
+              VITE_CLOUDINARY_UPLOAD_PRESET=your_upload_preset<br/>
+              VITE_CLOUDINARY_API_KEY=your_api_key
             </div>
           </div>
         </div>
