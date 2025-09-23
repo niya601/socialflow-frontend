@@ -320,43 +320,41 @@ const AppDashboard: React.FC = () => {
 
 const AppContent: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        {/* Landing Page Route */}
-        <Route 
-          path="/" 
-          element={
-            <div>
-              <LandingHeader />
-              <LandingPage />
-            </div>
-          } 
-        />
-        
-        {/* Auth Routes */}
-        <Route path="/login" element={<AuthPage mode="login" />} />
-        <Route path="/register" element={<AuthPage mode="register" />} />
-        
-        {/* Static Pages */}
-        <Route path="/features" element={<FeaturesPage />} />
-        <Route path="/pricing" element={<PricingPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/community" element={<CommunityPage />} />
-        <Route path="/tutorials" element={<TutorialsPage />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
-        <Route path="/terms" element={<TermsPage />} />
-        <Route path="/cookies" element={<CookiesPage />} />
-        <Route path="/security" element={<SecurityPage />} />
-        
-        {/* App Dashboard Routes */}
-        <Route path="/app/*" element={<AppDashboard />} />
-        
-        {/* Redirect old routes */}
-        <Route path="/dashboard" element={<Navigate to="/app" replace />} />
-      </Routes>
-    </Router>
+    <Routes>
+      {/* Landing Page Route */}
+      <Route 
+        path="/" 
+        element={
+          <div>
+            <LandingHeader />
+            <LandingPage />
+          </div>
+        } 
+      />
+      
+      {/* Auth Routes */}
+      <Route path="/login" element={<AuthPage mode="login" />} />
+      <Route path="/register" element={<AuthPage mode="register" />} />
+      
+      {/* Static Pages */}
+      <Route path="/features" element={<FeaturesPage />} />
+      <Route path="/pricing" element={<PricingPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/blog" element={<BlogPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/community" element={<CommunityPage />} />
+      <Route path="/tutorials" element={<TutorialsPage />} />
+      <Route path="/privacy" element={<PrivacyPage />} />
+      <Route path="/terms" element={<TermsPage />} />
+      <Route path="/cookies" element={<CookiesPage />} />
+      <Route path="/security" element={<SecurityPage />} />
+      
+      {/* App Dashboard Routes */}
+      <Route path="/app/*" element={<AppDashboard />} />
+      
+      {/* Redirect old routes */}
+      <Route path="/dashboard" element={<Navigate to="/app" replace />} />
+    </Routes>
   );
 };
 
