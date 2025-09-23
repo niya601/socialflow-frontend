@@ -76,16 +76,51 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         maxVideoFileSize: 50000000, // 50MB
         resourceType,
         clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi'],
+        // Enhanced editing capabilities
         cropping: true,
-        croppingAspectRatio: null, // Allow free cropping
+        croppingAspectRatio: null,
         croppingDefaultSelectionRatio: 1,
         croppingShowDimensions: true,
         croppingCoordinatesMode: 'custom',
         showSkipCropButton: true,
         showAdvancedOptions: true,
+        showCompletedButton: true,
+        showUploadMoreButton: false,
+        
+        // Image editing features
+        imageEditingMode: 'advanced',
+        showImageEditingOptions: true,
+        imageEditingOptions: {
+          crop: true,
+          resize: true,
+          rotate: true,
+          flip: true,
+          filters: true,
+          adjustments: true,
+          effects: true,
+          overlays: true,
+          text: true,
+          background: true
+        },
+        
+        // Advanced transformation options
+        eager: [
+          { width: 400, height: 400, crop: 'fill', quality: 'auto' },
+          { width: 800, height: 600, crop: 'fit', quality: 'auto' }
+        ],
+        
+        // Enable all editing tools
+        publicId: null,
+        use_filename: true,
+        unique_filename: true,
+        overwrite: false,
+        
+        // UI customization for better editing experience
         showInsecurePreview: false,
         showPoweredBy: false,
-        theme: 'minimal',
+        theme: 'white',
+        
+        // Enhanced styling
         styles: {
           palette: {
             window: '#FFFFFF',
@@ -100,9 +135,31 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
             error: '#F44235',
             inProgress: '#0078FF',
             complete: '#20B832',
-            sourceBg: '#E4EBF1'
+            sourceBg: '#E4EBF1',
+            menuIcons: '#5A616A'
+          },
+          fonts: {
+            default: null,
+            "'Fira Sans', sans-serif": {
+              url: 'https://fonts.googleapis.com/css?family=Fira+Sans',
+              active: true
+            }
           }
         },
+        
+        // Preprocessing for better editing
+        preprocessing: {
+          sources: {
+            local: {
+              options: {
+                showAdvancedOptions: true,
+                showSkipCropButton: true,
+                croppingValidateDimensions: false
+              }
+            }
+          }
+        },
+        
         folder,
         tags,
       },
