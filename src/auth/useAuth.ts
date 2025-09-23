@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { User as SupabaseUser } from '@supabase/supabase-js';
-import { supabase } from '../utils/supabase';
+import { supabase, testSupabaseConnection } from '../utils/supabase';
 import { User, AuthState } from '../types';
 
 export const useAuth = () => {
@@ -206,12 +206,23 @@ export const useAuth = () => {
     const getInitialSession = async () => {
       try {
         console.log('Getting initial session...');
+        
+        // Test Supabase connection first
+        const connectionTest = await testSupabaseConnection();
+        if (!connectionTest.success) {
+          console.error('Supabase connection failed:', connectionTest.error);
+          setError('Unable to connect to authentication service. Please check your configuration.');
+          setLoading(false);
+          return;
+        }
+        
         const { data: { session }, error } = await supabase.auth.getSession();
         
         console.log('Initial session check:', { session, error });
         
         if (error) {
           console.error('Session check error:', error);
+          setError('Authentication service error: ' + error.message);
           setLoading(false);
           return;
         }
@@ -228,7 +239,7 @@ export const useAuth = () => {
         }
       } catch (error) {
         console.error('Error getting initial session:', error);
-        setError('Failed to initialize authentication');
+        setError('Failed to initialize authentication. Please check your internet connection.');
         setLoading(false);
       }
     };
