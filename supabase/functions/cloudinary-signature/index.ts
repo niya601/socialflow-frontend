@@ -1,5 +1,4 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { createHash } from 'https://deno.land/std@0.190.0/crypto/mod.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -25,7 +24,7 @@ interface SignatureResponse {
   cloud_name: string
 }
 
-function generateSignature(params: Record<string, any>, apiSecret: string): string {
+async function generateSignature(params: Record<string, any>, apiSecret: string): Promise<string> {
   // Remove signature and api_key from params if they exist
   const { signature, api_key, ...paramsToSign } = params
 
@@ -44,10 +43,12 @@ function generateSignature(params: Record<string, any>, apiSecret: string): stri
   // Append API secret
   const stringToSign = `${sortedParams}${apiSecret}`
 
-  // Generate SHA-1 hash
-  const hash = createHash('sha1')
-  hash.update(stringToSign)
-  return hash.toString('hex')
+  // Generate SHA-1 hash using Web Crypto API
+  const encoder = new TextEncoder()
+  const data = encoder.encode(stringToSign)
+  const hashBuffer = await crypto.subtle.digest('SHA-1', data)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
 }
 
 serve(async (req: Request) => {
@@ -114,7 +115,7 @@ serve(async (req: Request) => {
     }
 
     // Generate signature
-    const signature = generateSignature(params, cloudinaryApiSecret)
+    const signature = await generateSignature(params, cloudinaryApiSecret)
 
     // Return signature data
     const response: SignatureResponse = {
