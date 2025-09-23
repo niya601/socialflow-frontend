@@ -10,6 +10,7 @@ interface SignatureRequest {
   folder?: string
   tags?: string[]
   resource_type?: string
+  upload_preset?: string
   public_id?: string
   transformation?: string
   eager?: string
@@ -100,6 +101,7 @@ serve(async (req: Request) => {
     if (body.folder) params.folder = body.folder
     if (body.tags && body.tags.length > 0) params.tags = body.tags.join(',')
     if (body.resource_type) params.resource_type = body.resource_type
+    if (body.upload_preset) params.upload_preset = body.upload_preset
     if (body.public_id) params.public_id = body.public_id
     if (body.transformation) params.transformation = body.transformation
     if (body.eager) params.eager = body.eager

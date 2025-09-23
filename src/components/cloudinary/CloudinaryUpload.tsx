@@ -65,6 +65,7 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
           folder,
           tags,
           resource_type: resourceType,
+          upload_preset: uploadPreset,
         },
       });
 
@@ -103,7 +104,6 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
           {
             cloudName: signature.cloud_name,
             apiKey: signature.api_key,
-            uploadPreset,
             signature: signature.signature,
             timestamp: signature.timestamp,
             sources: ['local', 'url', 'camera'],
