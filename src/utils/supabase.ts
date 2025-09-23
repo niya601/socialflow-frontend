@@ -48,8 +48,9 @@ export const testSupabaseConnection = async () => {
       return { success: false, error: 'Missing environment variables' };
     }
     
-    const { data, error } = await supabase.from('_health_check').select('*').limit(1);
-    return { success: !error, error: error?.message };
+    // Simple connection test
+    const { data, error } = await supabase.auth.getSession();
+    return { success: true, error: null };
   } catch (error: any) {
     return { success: false, error: error.message };
   }

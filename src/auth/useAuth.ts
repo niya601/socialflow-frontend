@@ -11,14 +11,17 @@ export const useAuth = () => {
   });
 
   const setError = useCallback((error: string | null) => {
+    console.log('Setting error:', error);
     setAuthState(prev => ({ ...prev, error, loading: false }));
   }, []);
 
   const setLoading = useCallback((loading: boolean) => {
+    console.log('Setting loading:', loading);
     setAuthState(prev => ({ ...prev, loading }));
   }, []);
 
   const setUser = useCallback((user: User | null) => {
+    console.log('Setting user:', user);
     setAuthState(prev => ({ ...prev, user, loading: false, error: null }));
   }, []);
 
@@ -26,6 +29,7 @@ export const useAuth = () => {
     try {
       setLoading(true);
       setError(null);
+      console.log('Starting signup for:', email);
 
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -39,35 +43,19 @@ export const useAuth = () => {
       });
 
       if (error) {
+        console.error('Signup error:', error);
         throw error;
       }
 
-      if (data.user) {
-        const user: User = {
-          id: data.user.id,
-          email: data.user.email || email,
-          company_name: companyName,
-          subscription_plan: subscriptionPlan,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        };
-        
-        setUser(user);
-        return { success: true };
-      }
-
-      setLoading(false);
+      console.log('Signup successful:', data);
       return { success: true };
     } catch (error: any) {
+      console.error('Signup failed:', error);
       let errorMessage = 'Registration failed. Please try again.';
       
       if (error.message) {
-        if (error.message.includes('fetch')) {
-          errorMessage = 'Unable to connect to authentication service. Please check your internet connection.';
-        } else if (error.message.includes('User already registered')) {
+        if (error.message.includes('User already registered')) {
           errorMessage = 'An account with this email already exists. Please try logging in instead.';
-        } else if (error.message.includes('Invalid API key')) {
-          errorMessage = 'Authentication service configuration error. Please contact support.';
         } else {
           errorMessage = error.message;
         }
@@ -80,7 +68,7 @@ export const useAuth = () => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      setLoading(true);
+      console.log('Starting signin for:', email);
       setError(null);
 
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -89,19 +77,33 @@ export const useAuth = () => {
       });
 
       if (error) {
+        console.error('Signin error:', error);
         throw error;
       }
 
-      // Don't set user here - let the auth state change handler do it
-      // Just return success
+      console.log('Signin successful:', data);
+      
+      // Create user object immediately for faster UI response
+      if (data.user) {
+        const user: User = {
+          id: data.user.id,
+          email: data.user.email || email,
+          company_name: data.user.user_metadata?.company_name || 'My Company',
+          subscription_plan: data.user.user_metadata?.subscription_plan || 'Free',
+          created_at: data.user.created_at || new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        
+        setUser(user);
+      }
+
       return { success: true };
     } catch (error: any) {
+      console.error('Signin failed:', error);
       let errorMessage = 'Login failed. Please try again.';
       
       if (error.message) {
-        if (error.message.includes('fetch')) {
-          errorMessage = 'Unable to connect to authentication service. Please check your internet connection.';
-        } else if (error.message.includes('Invalid login credentials')) {
+        if (error.message.includes('Invalid login credentials')) {
           errorMessage = 'Invalid email or password. Please check your credentials and try again.';
         } else {
           errorMessage = error.message;
@@ -136,46 +138,20 @@ export const useAuth = () => {
     }
   };
 
-  const fetchUserProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) {
-        return {
-          id: userId,
-          email: 'user@example.com',
-          company_name: 'My Company',
-          subscription_plan: 'Free',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        };
-      }
-      return data;
-    } catch (error: any) {
-      return {
-        id: userId,
-        email: 'user@example.com',
-        company_name: 'My Company',
-        subscription_plan: 'Free',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-    }
-  };
-
   useEffect(() => {
     let mounted = true;
+    console.log('Auth hook initializing...');
 
     const getInitialSession = async () => {
       try {
+        console.log('Getting initial session...');
+        
+        // Test connection first
         const connectionTest = await testSupabaseConnection();
         if (!connectionTest.success) {
+          console.error('Connection test failed:', connectionTest.error);
           if (mounted) {
-            setError('Unable to connect to authentication service. Please check your configuration.');
+            setError('Unable to connect to authentication service.');
           }
           return;
         }
@@ -183,6 +159,7 @@ export const useAuth = () => {
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
+          console.error('Session error:', error);
           if (mounted) {
             setError('Authentication service error: ' + error.message);
           }
@@ -190,16 +167,24 @@ export const useAuth = () => {
         }
       
         if (session?.user && mounted) {
-          const profile = await fetchUserProfile(session.user.id);
-          if (profile && mounted) {
-            setUser(profile);
-          }
+          console.log('Found existing session:', session.user);
+          const user: User = {
+            id: session.user.id,
+            email: session.user.email || 'user@example.com',
+            company_name: session.user.user_metadata?.company_name || 'My Company',
+            subscription_plan: session.user.user_metadata?.subscription_plan || 'Free',
+            created_at: session.user.created_at || new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          setUser(user);
         } else if (mounted) {
+          console.log('No existing session found');
           setLoading(false);
         }
-      } catch (error) {
+      } catch (error: any) {
+        console.error('Session initialization error:', error);
         if (mounted) {
-          setError('Failed to initialize authentication. Please check your internet connection.');
+          setError('Failed to initialize authentication.');
         }
       }
     };
@@ -209,30 +194,41 @@ export const useAuth = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!mounted) return;
+        
+        console.log('Auth state change:', event, session?.user?.email);
 
         if (event === 'SIGNED_IN' && session?.user) {
-          const profile = await fetchUserProfile(session.user.id);
-          if (profile && mounted) {
-            setUser(profile);
-          }
+          const user: User = {
+            id: session.user.id,
+            email: session.user.email || 'user@example.com',
+            company_name: session.user.user_metadata?.company_name || 'My Company',
+            subscription_plan: session.user.user_metadata?.subscription_plan || 'Free',
+            created_at: session.user.created_at || new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          setUser(user);
         } else if (event === 'SIGNED_OUT') {
-          if (mounted) {
-            setUser(null);
-          }
+          setUser(null);
         } else if (event === 'TOKEN_REFRESHED' && session?.user) {
-          const profile = await fetchUserProfile(session.user.id);
-          if (profile && mounted) {
-            setUser(profile);
-          }
+          const user: User = {
+            id: session.user.id,
+            email: session.user.email || 'user@example.com',
+            company_name: session.user.user_metadata?.company_name || 'My Company',
+            subscription_plan: session.user.user_metadata?.subscription_plan || 'Free',
+            created_at: session.user.created_at || new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          setUser(user);
         }
       }
     );
 
     return () => {
+      console.log('Auth hook cleanup');
       mounted = false;
       subscription.unsubscribe();
     };
-  }, []);
+  }, [setUser, setError, setLoading]);
 
   return {
     ...authState,
