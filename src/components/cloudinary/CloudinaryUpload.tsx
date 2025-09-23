@@ -108,7 +108,6 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
             apiKey: signature.api_key,
             signature: signature.signature,
             timestamp: signature.timestamp,
-            uploadPreset,
             sources: ['local', 'url', 'camera'],
             multiple: maxFiles > 1,
             maxFiles,
